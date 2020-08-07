@@ -1,0 +1,88 @@
+# Deprecated Folder
+_deprecated/
+
+# OS Files
+**/.DS_Store
+**/.DS_Store?
+
+# env file
+.env
+
+# Vim files
+*.sw[mnop]
+
+# Data Files
+*.zip
+*.tar.gz
+*.dat
+
+# .pyenv files
+.python-version
+
+# pytest files
+.pytest_cache/
+
+# Jupyter files
+*.ipynb_checkpoints
+
+# Python build files
+build/
+
+# Rope Files
+.ropeproject/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+
+# Environments
+.env
+.envrc
+
+# Gdal and other image formats
+*.tif
+*.xml
+*.shp
+*.sbx
+*.sbn
+*.shx
+*.prj
+*.dbf
+*.cpg
+*.msk
+*.kmz
+*.jpg
+*.wld
+*.geojson
+
+# Allow tif datacube to be added
+!notebooks/supervised_classification/data/tif_datacube/*.tif
+# Allow labeled vector data to be added
+!notebooks/supervised_classification/data/labeled_data/*
+
+# Log files
+*.log
+
+# Pickle Data
+*.pkl
+
+# Data
+**/_data/
+
+# Ignore pdf Files
+*.pdf
+
+# Ignore title page
+_title_page/
+
+# Ignore Scripts
+Make PDFs.ipynb
+Copy Notebooks without Answers.ipynb
+Acknowledgements.ipynb
