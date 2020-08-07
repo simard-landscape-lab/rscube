@@ -24,4 +24,4 @@ We have some simple functions which we include under `rscube`, though they are b
 
 7. Create a new jupyter kernel: 
 
-	`python -m ipykernel install --user --name rscub`.
+	`python -m ipykernel install --user --name rscube`.
