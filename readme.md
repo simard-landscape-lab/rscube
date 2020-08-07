@@ -21,3 +21,7 @@ We have some simple functions which we include under `rscube`, though they are b
 6. Install requirements: 
 
 	`conda install -c conda-forge --yes --file requirements.txt`
+
+7. Create a new jupyter kernel: 
+
+	`python -m ipykernel install --user --name rscub`.
