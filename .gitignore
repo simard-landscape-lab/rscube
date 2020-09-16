@@ -73,16 +73,5 @@ __pycache__/
 # Pickle Data
 *.pkl
 
-# Data
-**/_data/
-
 # Ignore pdf Files
 *.pdf
-
-# Ignore title page
-_title_page/
-
-# Ignore Scripts
-Make PDFs.ipynb
-Copy Notebooks without Answers.ipynb
-Acknowledgements.ipynb

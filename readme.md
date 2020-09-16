@@ -18,10 +18,18 @@ We have some simple functions which we include under `rscube`, though they are b
 
 	`conda activate rscube`.
 
-6. Install requirements: 
+6. Install requirements with pip: 
+
+	`pip install -r requirements.txt`
+
+	or with conda:
 
 	`conda install -c conda-forge --yes --file requirements.txt`
 
-7. Create a new jupyter kernel: 
+7. Install `rscube` into the environment:
+   
+   `pip install .`
+
+8. Create a new jupyter kernel: 
 
 	`python -m ipykernel install --user --name rscube`.
