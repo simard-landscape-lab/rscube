@@ -54,6 +54,7 @@ __pycache__/
 *.sbn
 *.shx
 *.prj
+*.qpj
 *.dbf
 *.cpg
 *.msk
@@ -66,6 +67,7 @@ __pycache__/
 !notebooks/supervised_classification/data/tif_datacube/*.tif
 # Allow labeled vector data to be added
 !notebooks/supervised_classification/data/labeled_data/*
+!notebooks/superpixel_segmentation/data/ROI/*
 
 # Log files
 *.log

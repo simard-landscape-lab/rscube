@@ -16,3 +16,7 @@ By no means are these the "only" way of doing something and many of the methods 
      + Mangrove Changes in Malaysia using ALOS-1
    + Use a statistic related to a hypothesis test expounded here to obtain a change criterion.
    + Apply change criterion across time series and save detected changes in common GIS formats.
+
+2. [Superpixel Segmentation](change_detection) (more advanced)
+   + Collect Landsat and ALOS-1 data and use this for segmentation
+   + Carefully track the nodata areas and crop according to a shapefile bounding a region of interest.
