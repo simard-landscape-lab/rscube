@@ -2,6 +2,7 @@ import numpy as np
 import scipy.ndimage as nd
 from scipy.ndimage import find_objects
 from typing import Callable
+import scipy.ndimage.measurements as measurements
 
 
 def interpolate_nn(data):
@@ -336,3 +337,41 @@ def scale_img(img: np.ndarray,
     img_scaled = (img - i_min) / (i_max - i_min) * (new_max - new_min)
     img_scaled += new_min
     return img_scaled
+
+
+def _get_superpixel_means_band(label_array, band):
+    # Assume labels are 0, 1, 2, ..., n
+    labels_ = label_array + 1  # scipy wants labels to begin at 1 and transforms to 1, 2, ..., n+1
+    labels_unique = np.unique(labels_)
+    means = measurements.mean(band, labels=labels_, index=labels_unique)
+    return means.reshape((-1, 1))
+
+
+def get_superpixel_means_as_features(label_array, img):
+    if len(img.shape) == 2:
+        measurements = _get_superpixel_means_band(label_array, img)
+    elif len(img.shape) == 3:
+        measurements = [_get_superpixel_means_band(label_array, img[..., k]) for k in range(img.shape[2])]
+        measurements = np.concatenate(measurements, axis=1)
+    else:
+        raise ValueError('img must be 2d or 3d array')
+    return measurements
+
+
+def _get_superpixel_stds_band(label_array, band):
+    # Assume labels are 0, 1, 2, ..., n
+    labels_ = label_array + 1  # scipy wants labels to begin at 1 and transforms to 1, 2, ..., n+1
+    labels_unique = np.unique(labels_)
+    means = measurements.standard_deviation(band, labels=labels_, index=labels_unique)
+    return means.reshape((-1, 1))
+
+
+def get_superpixel_stds_as_features(label_array, img):
+    if len(img.shape) == 2:
+        measurements = _get_superpixel_stds_band(label_array, img)
+    elif len(img.shape) == 3:
+        measurements = [_get_superpixel_stds_band(label_array, img[..., k]) for k in range(img.shape[2])]
+        measurements = np.concatenate(measurements, axis=1)
+    else:
+        raise ValueError('img must be 2d or 3d array')
+    return measurements
