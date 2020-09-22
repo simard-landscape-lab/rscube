@@ -9,4 +9,4 @@ We do the following:
 3. Segment the data using skimage carefully keeping track of nodata areas
 4. Aggregate statistics within each superpixel segment and save this data to tif and shapefiles.
 
-The reason this is advanced is because a) the datasets are slighly larger and b) we are carefully keeping track of nodata areas. This is easy conceptually, but is not readily dealt with in the sckikit ecosystem.
+The reason this is advanced is because a) the datasets are slightly larger requiring more time to process and b) we are carefully keeping track of nodata areas. This is easy conceptually, but is not readily dealt with in the scikit ecosystem.

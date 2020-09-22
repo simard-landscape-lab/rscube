@@ -17,7 +17,9 @@ def interpolate_nn(data):
         filled (array): The filled data.
 
     """
-    ind = nd.distance_transform_edt(np.isnan(data), return_distances=False, return_indices=True)
+    ind = nd.distance_transform_edt(np.isnan(data),
+                                    return_distances=False,
+                                    return_indices=True)
     return data[tuple(ind)]
 
 
@@ -53,28 +55,28 @@ def bilinear_interpolate(data, x, y, nan_boundaries=False):
     y1 = y0 + 1
 
     # Clip the image coordinates to the size of the input data.
-    x0 = np.clip(x0, 0, data.shape[1]-1);
-    x1 = np.clip(x1, 0, data.shape[1]-1);
-    y0 = np.clip(y0, 0, data.shape[0]-1);
-    y1 = np.clip(y1, 0, data.shape[0]-1);
+    x0 = np.clip(x0, 0, data.shape[1] - 1)
+    x1 = np.clip(x1, 0, data.shape[1] - 1)
+    y0 = np.clip(y0, 0, data.shape[0] - 1)
+    y1 = np.clip(y1, 0, data.shape[0] - 1)
 
-    data_ll = data[y0, x0] # lower left corner image values
-    data_ul = data[y1, x0] # upper left corner image values
-    data_lr = data[y0, x1] # lower right corner image values
-    data_ur = data[y1, x1] # upper right corner image values
+    data_ll = data[y0, x0]  # lower left corner image values
+    data_ul = data[y1, x0]  # upper left corner image values
+    data_lr = data[y0, x1]  # lower right corner image values
+    data_ur = data[y1, x1]  # upper right corner image values
 
-    w_ll = (x1-x) * (y1-y) # weight for lower left value
-    w_ul = (x1-x) * (y-y0) # weight for upper left value
-    w_lr = (x-x0) * (y1-y) # weight for lower right value
-    w_ur = (x-x0) * (y-y0) # weight for upper right value
+    w_ll = (x1-x) * (y1-y)  # weight for lower left value
+    w_ul = (x1-x) * (y-y0)  # weight for upper left value
+    w_lr = (x-x0) * (y1-y)  # weight for lower right value
+    w_ur = (x-x0) * (y-y0)  # weight for upper right value
 
     # Where the x or y coordinates are outside of the image boundaries, set one
     # of the weights to nan, so that these values are nan in the output array.
     if nan_boundaries:
-        w_ll[np.less(x,0)] = np.nan
-        w_ll[np.greater(x,data.shape[1]-1)] = np.nan
-        w_ll[np.less(y,0)] = np.nan
-        w_ll[np.greater(y,data.shape[0]-1)] = np.nan
+        w_ll[np.less(x, 0)] = np.nan
+        w_ll[np.greater(x, data.shape[1]-1)] = np.nan
+        w_ll[np.less(y, 0)] = np.nan
+        w_ll[np.greater(y, data.shape[0]-1)] = np.nan
 
     intdata = w_ll*data_ll + w_ul*data_ul + w_lr*data_lr + w_ur*data_ur
 
@@ -339,38 +341,51 @@ def scale_img(img: np.ndarray,
     return img_scaled
 
 
-def _get_superpixel_means_band(label_array, band):
+def _get_superpixel_means_band(label_array: np.array,
+                               band: np.array) -> np.array:
     # Assume labels are 0, 1, 2, ..., n
-    labels_ = label_array + 1  # scipy wants labels to begin at 1 and transforms to 1, 2, ..., n+1
+    # scipy wants labels to begin at 1 and transforms to 1, 2, ..., n+1
+    labels_ = label_array + 1
     labels_unique = np.unique(labels_)
     means = measurements.mean(band, labels=labels_, index=labels_unique)
     return means.reshape((-1, 1))
 
 
-def get_superpixel_means_as_features(label_array, img):
+def get_superpixel_means_as_features(label_array: np.array,
+                                     img: np.array) -> np.array:
     if len(img.shape) == 2:
         measurements = _get_superpixel_means_band(label_array, img)
     elif len(img.shape) == 3:
-        measurements = [_get_superpixel_means_band(label_array, img[..., k]) for k in range(img.shape[2])]
+        measurements = [_get_superpixel_means_band(label_array,
+                                                   img[..., k])
+                        for k in range(img.shape[2])]
         measurements = np.concatenate(measurements, axis=1)
     else:
         raise ValueError('img must be 2d or 3d array')
     return measurements
 
 
-def _get_superpixel_stds_band(label_array, band):
+def _get_superpixel_stds_band(label_array: np.array,
+                              band: np.array) -> np.array:
     # Assume labels are 0, 1, 2, ..., n
-    labels_ = label_array + 1  # scipy wants labels to begin at 1 and transforms to 1, 2, ..., n+1
+    # scipy wants labels to begin at 1 and transforms to 1, 2, ..., n+1
+    labels_ = label_array + 1
     labels_unique = np.unique(labels_)
-    means = measurements.standard_deviation(band, labels=labels_, index=labels_unique)
+    means = measurements.standard_deviation(band,
+                                            labels=labels_,
+                                            index=labels_unique)
     return means.reshape((-1, 1))
 
 
-def get_superpixel_stds_as_features(label_array, img):
+def get_superpixel_stds_as_features(label_array: np.array,
+                                    img: np.array) -> np.array:
     if len(img.shape) == 2:
-        measurements = _get_superpixel_stds_band(label_array, img)
+        measurements = _get_superpixel_stds_band(label_array,
+                                                 img)
     elif len(img.shape) == 3:
-        measurements = [_get_superpixel_stds_band(label_array, img[..., k]) for k in range(img.shape[2])]
+        measurements = [_get_superpixel_stds_band(label_array,
+                                                  img[..., k])
+                        for k in range(img.shape[2])]
         measurements = np.concatenate(measurements, axis=1)
     else:
         raise ValueError('img must be 2d or 3d array')
